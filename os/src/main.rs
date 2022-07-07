@@ -2,12 +2,15 @@
 #![no_main]
 #![feature(format_args_nl)]
 
-use os::{
-    sys_exit, println,
-};
+use os::*;
+
+core::arch::global_asm!(
+    include_str!("entry.asm")
+);
 
 #[no_mangle]
-extern "C" fn _start() {
+pub fn rust_main() -> ! {
     println!("Hello, world!");
-    sys_exit(9);
+    clear_bss();
+    shutdown();
 }
