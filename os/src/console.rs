@@ -1,12 +1,14 @@
 use core::fmt;
 use crate::sys_write;
+use crate::sbi::console_putchar;
 
 struct Stdout;
 
 impl fmt::Write for Stdout {
     fn write_str(&mut self, s: &str) -> fmt::Result {
-        // 1 means stdout
-        sys_write(1, s.as_bytes());
+        // The following code doesn't work on qemu machine mode
+        // sys_write(1, s.as_bytes());         // 1 means stdout
+        s.bytes().for_each(|c| console_putchar(c as usize));
         Ok(())
     }
 }

@@ -5,12 +5,9 @@
 pub mod lang_items;
 pub mod console;
 pub mod sbi;
-use sbi::sbi_call;
 
 const SYSCALL_EXIT: usize = 93;
 const SYSCALL_WRITE: usize = 64;
-
-const SBI_SHUTDOWN: usize = 8;
 
 
 pub fn syscall(id: usize, args: [usize; 3]) -> isize {
@@ -33,12 +30,6 @@ pub fn sys_exit(xstate: i32) -> isize {
 
 pub fn sys_write(fd: usize, buffer: &[u8]) -> isize {
     syscall(SYSCALL_WRITE, [fd, buffer.as_ptr() as usize, buffer.len()])
-}
-
-pub fn shutdown() -> ! {
-    println!("shudown..");
-    sbi_call(SBI_SHUTDOWN, 0, 0, 0);
-    panic!("It should have shutdown");
 }
 
 pub fn clear_bss() {

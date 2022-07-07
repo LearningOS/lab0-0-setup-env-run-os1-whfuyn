@@ -9,8 +9,8 @@ core::arch::global_asm!(
 );
 
 #[no_mangle]
-pub fn rust_main() -> ! {
+pub fn rust_main() {
     println!("Hello, world!");
     clear_bss();
-    shutdown();
+    sbi::shutdown();
 }
